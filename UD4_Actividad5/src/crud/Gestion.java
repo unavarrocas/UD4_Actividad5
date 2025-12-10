@@ -15,9 +15,9 @@ public class Gestion {
 		
 		int opcionMenu = 0;
 		
-		mostrarMenu();
-		
 		while (opcionMenu != 12) {
+			
+			mostrarMenu();
 			
 			System.out.println("Elija una opcion: ");
 			opcionMenu = Integer.parseInt(sc.nextLine());
@@ -98,7 +98,7 @@ public class Gestion {
 						
 					} else {
 						
-						System.out.println("--------- | FIN | ---------");
+						System.out.println("--------- | FIN PROGRAMA | ---------");
 						
 					}
 			
@@ -121,7 +121,6 @@ public class Gestion {
 			
 			String nombreAlumno = "";
 			int edadAlumno = 0;
-			String[] cursosAlumno = new String[0];
 			
 			System.out.println("Escriba el nombre del alumno: ");
 			nombreAlumno = sc.nextLine();
@@ -132,30 +131,72 @@ public class Gestion {
 				
 			} else {
 				
+				newAlumno.setNombre(nombreAlumno);
+				
+				int selecMenu = 0;
+				
 				System.out.println("Indique la edad del alumno: ");
 				edadAlumno = Integer.parseInt(sc.nextLine());
 				
+				newAlumno.setEdad(edadAlumno);
+				
 				String curso = "";
 				
-				for (int i = 0;curso.equals(" ");i++) {
+				while (selecMenu != 2) {
 					
-					System.out.println("Escriba el curso a añadir (Pulsa enter para dejar de añadir cursos): ");
-					curso = sc.nextLine();
+					menuAgregarCursos();
 					
-					if (curso.equals(" ")) {
+					System.out.println("Elija que desea hacer: ");
+					selecMenu = Integer.parseInt(sc.nextLine());
+					
+					switch (selecMenu) {
+					
+						case 1:
+							
+							System.out.println("Escriba el curso a agregar: ");
+							curso = sc.nextLine();
+							
+							if (!comprobarCurso(listaCursos,curso)) {
+								
+								System.out.println("El curso no existe.");
+								
+							} else {
+								
+								newAlumno.anyadirCurso(curso);
+
+								for (int j = 0;j < listaCursos.size();j++) {
+									
+									if (listaCursos.get(j).getTitulo().equalsIgnoreCase(curso)) {
+										
+										listaCursos.get(j).anyadirAlumno(newAlumno);
+										
+									}
+									
+								}
+								
+							}
+							
+							break;
 						
-						break;
-						
-					} else {
-						
-						cursosAlumno[i] = curso;
-						
+						default:
+							
+							if (selecMenu != 2) {
+								
+								System.out.println("Opcion no valida.");
+								
+							} else {
+								
+								System.out.println("Cursos agregados.");
+								
+							}
+					
 					}
-					
+				
 				}
 				
-			}
+				listaAlumnos.add(newAlumno);
 			
+			}
 			
 		}
 		
@@ -163,6 +204,38 @@ public class Gestion {
 
 	private static void crearNuevoCurso(ArrayList<Curso> listaCursos, Scanner sc) {
 		// TODO Auto-generated method stub
+		
+		Curso newCurso = new Curso();
+		
+		String tituloCurso = "";
+		String descCurso = "";
+		String profeCurso = "";
+		
+		System.out.println("Escriba el nombre del nuevo curso: ");
+		tituloCurso = sc.nextLine();
+		
+		if (comprobarCurso(listaCursos,tituloCurso)) {
+			
+			System.out.println("El curso " + tituloCurso + " ya existe.");
+			
+		} else {
+			
+			newCurso.setTitulo(tituloCurso);
+			
+			System.out.println("Escriba una descripcion del curso: ");
+			descCurso = sc.nextLine();
+			
+			newCurso.setDescripcion(descCurso);
+			
+			System.out.println("Escriba el nombre del profesor: ");
+			profeCurso = sc.nextLine();
+			
+			newCurso.setProfesor(profeCurso);
+			
+		}
+		
+		listaCursos.add(newCurso);
+		
 		
 	}
 
@@ -199,10 +272,60 @@ public class Gestion {
 	private static void mostrarAlumnoEspecifico(ArrayList<Alumno> listaAlumnos, Scanner sc) {
 		// TODO Auto-generated method stub
 		
+		String nomAlumno = "";
+		
+		System.out.println("Escriba el nombre del alumno que quiere cosultar: ");
+		nomAlumno = sc.nextLine();
+		
+		if (!comprobarAlumno(listaAlumnos,nomAlumno)) {
+			
+			System.out.println("El alumno " + nomAlumno + " no existe.");
+			
+		} else {
+			
+			for (int i = 0;i < listaAlumnos.size();i++) {
+				
+				if (listaAlumnos.get(i).getNombre().equalsIgnoreCase(nomAlumno)) {
+					
+					System.out.println(listaAlumnos.get(i).toString());
+					
+					break;
+					
+				}
+				
+			}
+			
+		}
+		
 	}
 
 	private static void mostrarCursoEspecifico(ArrayList<Curso> listaCursos, Scanner sc) {
 		// TODO Auto-generated method stub
+		
+		String tituloC = "";
+		
+		System.out.println("Escriba el titulo del curso que quiere cosultar: ");
+		tituloC = sc.nextLine();
+		
+		if (!comprobarCurso(listaCursos,tituloC)) {
+			
+			System.out.println("El curso " + tituloC + " no existe.");
+			
+		} else {
+			
+			for (int i = 0;i < listaCursos.size();i++) {
+				
+				if (listaCursos.get(i).getTitulo().equalsIgnoreCase(tituloC)) {
+					
+					System.out.println(listaCursos.get(i).toString());
+					
+					break;
+					
+				}
+				
+			}
+			
+		}
 		
 	}
 	
@@ -231,6 +354,15 @@ public class Gestion {
 		
 	}
 	
+	private static void menuAgregarCursos () {
+		
+		System.out.println("\n--- | AGREGAR CURSOS | ---\n");
+		System.out.println("1. Agregar curso");
+		System.out.println("2. SALIR");
+		System.out.println("\n--- | AGREGAR CURSOS | ---\n");
+		
+	}
+	
 	private static boolean comprobarAlumno (ArrayList<Alumno> listaAlumnos, String alumno) {
 		
 		boolean existe = false;
@@ -238,6 +370,24 @@ public class Gestion {
 		for (int i = 0;i < listaAlumnos.size();i++) {
 			
 			if (listaAlumnos.get(i).getNombre().equalsIgnoreCase(alumno)) {
+				
+				existe = true;
+				
+			}
+			
+		}
+		
+		return existe;
+		
+	}
+	
+	private static boolean comprobarCurso (ArrayList<Curso> listaCursos, String curso) {
+		
+		boolean existe = false;
+		
+		for (int i = 0;i < listaCursos.size();i++) {
+			
+			if (listaCursos.get(i).getTitulo().equalsIgnoreCase(curso)) {
 				
 				existe = true;
 				

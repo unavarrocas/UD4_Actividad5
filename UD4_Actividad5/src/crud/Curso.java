@@ -80,7 +80,13 @@ public class Curso {
 		
 	}
 	
+	// toString
 	
+	@Override
+	public String toString() {
+		return "-------------------------\n\n Titulo: " + titulo + "\n Descripcion: " + descripcion + "\n Profesor: " + profesor + "\n Alumnos: " + alumnos + "\n\n-------------------------\n";
+		
+		
+	}
 	
-
 }

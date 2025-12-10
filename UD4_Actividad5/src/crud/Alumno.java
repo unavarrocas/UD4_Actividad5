@@ -6,7 +6,7 @@ public class Alumno {
 	
 	private String nombre;
 	private int edad;
-	private String[] cursos;
+	private String[] cursos = new String[0];
 	
 	// CONSTRUCTORES
 	
@@ -17,9 +17,7 @@ public class Alumno {
 	public Alumno(String nombre, int edad) {
 		
 		this.nombre = nombre;
-		this.edad = edad;
-		this.cursos = new String[0];
-		
+		this.edad = edad;		
 	}
 	
 	// GETTER Y SETTERS
@@ -90,4 +88,12 @@ public class Alumno {
 		this.cursos = nuevoArray;
 		
 	}
+	
+	// toString
+	
+	@Override
+	public String toString() {
+		return "-------------------------\n\n Nombre: " + nombre + "\n Edad: " + edad + "\n Cursos: " + Arrays.toString(cursos) + "\n\n-------------------------\n";
+	}
+	
 }
