@@ -38,7 +38,7 @@ public class Gestion {
 					
 				case 3:
 					
-					editarAlumno(listaAlumnos,sc);
+					editarAlumno(listaAlumnos,listaCursos,sc);
 					
 					break;
 					
@@ -186,7 +186,7 @@ public class Gestion {
 								
 							} else {
 								
-								System.out.println("Cursos agregados.");
+								System.out.println("Menu de agregar cursos cerrado.");
 								
 							}
 					
@@ -239,8 +239,128 @@ public class Gestion {
 		
 	}
 
-	private static void editarAlumno(ArrayList<Alumno> listaAlumnos, Scanner sc) {
+	private static void editarAlumno(ArrayList<Alumno> listaAlumnos, ArrayList<Curso> listaCursos, Scanner sc) {
 		// TODO Auto-generated method stub
+		
+		String nomAlumno = "";
+		
+		System.out.println("Escriba el nombre del alumno que quiere editar: ");
+		nomAlumno = sc.nextLine();
+		
+		if (!comprobarAlumno(listaAlumnos,nomAlumno)) {
+			
+			System.out.println("El alumno " + nomAlumno + " no existe.");
+			
+		} else {
+			
+			for (int i = 0;i < listaAlumnos.size();i++) {
+				
+				if (listaAlumnos.get(i).getNombre().equalsIgnoreCase(nomAlumno)) {
+					
+					int opcionMenu = 0;
+					
+					while (opcionMenu != 3) {
+						
+						menuEditarAlumno();
+						
+						System.out.println("Elija una opcion: ");
+						opcionMenu = Integer.parseInt(sc.nextLine());
+						
+						switch (opcionMenu) {
+						
+							case 1:
+								
+								// Editar nombre
+								
+								String newNombre = "";
+								
+								System.out.println("Escriba el nuevo nombre del alumno [Anterior: " + nomAlumno + "]: ");
+								newNombre = sc.nextLine();
+								
+								if (comprobarAlumno(listaAlumnos,newNombre)) {
+									
+									System.out.println("El alumno " + newNombre + " ya existe.");
+									
+								} else {
+									
+									listaAlumnos.get(i).setNombre(newNombre);
+									
+									for (int j = 0;j < listaCursos.size();j++) {
+										
+										for (int k = 0;k < listaCursos.get(j).getAlumnos().size();k++) {
+											
+											if (listaCursos.get(j).getAlumnos().get(k).getNombre().equalsIgnoreCase(nomAlumno)) {
+												
+												listaCursos.get(j).getAlumnos().get(k).setNombre(newNombre);
+												
+											}
+											
+										}
+										
+									}
+									
+								}
+								
+								break;
+								
+							case 2:
+								
+								// Editar edad
+								
+								int newEdad = 0;
+								
+								System.out.println("Escriba la nueva edad del alumno [Anterior: " + listaAlumnos.get(i).getEdad() + "]: ");
+								newEdad = Integer.parseInt(sc.nextLine());
+								
+								if (newEdad == listaAlumnos.get(i).getEdad() || newEdad < 0) {
+									
+									System.out.println("El valor introducido no es valido.");
+									
+								} else {
+									
+									listaAlumnos.get(i).setEdad(newEdad);
+									
+									for (int j = 0;j < listaCursos.size();j++) {
+										
+										for (int k = 0;k < listaCursos.get(j).getAlumnos().size();k++) {
+											
+											if (listaCursos.get(j).getAlumnos().get(k).getNombre().equalsIgnoreCase(nomAlumno)) {
+												
+												listaCursos.get(j).getAlumnos().get(k).setEdad(newEdad);
+												
+											}
+											
+										}
+										
+									}
+									
+								}
+								
+								break;
+								
+							default:
+								
+								if (opcionMenu != 3) {
+									
+									System.out.println("Opcion no valida, vuelva a probar.");
+									
+								} else {
+									
+									System.out.println("Menu de edicion de alumnos cerrado.");
+									
+								}
+						
+						}
+						
+					}
+					
+					break;
+					
+				}
+				
+			}
+			
+		}
 		
 	}
 
@@ -360,6 +480,16 @@ public class Gestion {
 		System.out.println("1. Agregar curso");
 		System.out.println("2. SALIR");
 		System.out.println("\n--- | AGREGAR CURSOS | ---\n");
+		
+	}
+	
+	private static void menuEditarAlumno () {
+		
+		System.out.println("\n--- | EDITAR ALUMNO | ---\n");
+		System.out.println("1. Editar nombre");
+		System.out.println("2. Editar edad");
+		System.out.println("3. SALIR");
+		System.out.println("\n--- | EDITAR ALUMNO | ---\n");
 		
 	}
 	

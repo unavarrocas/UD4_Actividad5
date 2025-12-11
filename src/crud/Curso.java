@@ -84,7 +84,24 @@ public class Curso {
 	
 	@Override
 	public String toString() {
-		return "-------------------------\n\n Titulo: " + titulo + "\n Descripcion: " + descripcion + "\n Profesor: " + profesor + "\n Alumnos: " + alumnos + "\n\n-------------------------\n";
+		
+		String nomAlumnos = "";
+		
+		for (int i = 0;i < alumnos.size();i++) {
+			
+			if (i == alumnos.size() - 1) {
+				
+				nomAlumnos += alumnos.get(i).getNombre();
+				
+			} else {
+				
+				nomAlumnos += alumnos.get(i).getNombre() + ", ";
+				
+			}
+			
+		}
+		
+		return "-------------------------\n\n Titulo: " + titulo + "\n Descripcion: " + descripcion + "\n Profesor: " + profesor + "\n Alumnos: " + nomAlumnos + "\n\n-------------------------\n";
 		
 		
 	}
