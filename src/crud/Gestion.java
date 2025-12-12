@@ -44,31 +44,31 @@ public class Gestion {
 					
 				case 4:
 					
-					editarCurso(listaCursos,sc);
+					editarCurso(listaCursos,listaAlumnos,sc);
 					
 					break;
 					
 				case 5:
 					
-					eliminarAlumno(listaAlumnos,sc);
+					eliminarAlumno(listaAlumnos,listaCursos,sc);
 					
 					break;
 					
 				case 6:
 					
-					eliminarCurso(listaCursos,sc);
+					eliminarCurso(listaCursos,listaAlumnos,sc);
 					
 					break;
 					
 				case 7:
 					
-					agregarCursoAAlumno(listaAlumnos,sc);
+					agregarCursoAAlumno(listaAlumnos,listaCursos,sc);
 					
 					break;
 					
 				case 8:
 					
-					eliminarCursoAAlumno(listaAlumnos,sc);
+					eliminarCursoAAlumno(listaAlumnos,listaCursos,sc);
 					
 					break;
 					
@@ -364,28 +364,287 @@ public class Gestion {
 		
 	}
 
-	private static void editarCurso(ArrayList<Curso> listaCursos, Scanner sc) {
+	private static void editarCurso(ArrayList<Curso> listaCursos, ArrayList<Alumno> listaAlumnos, Scanner sc) {
 		// TODO Auto-generated method stub
+		
+		String tituloC = "";
+		
+		System.out.println("Escriba el titulo del curso que quiere editar: ");
+		tituloC = sc.nextLine();
+		
+		if (!comprobarCurso(listaCursos,tituloC)) {
+			
+			System.out.println("El curso que quiere editar no existe.");
+			
+		} else {
+			
+			for (int i = 0;i < listaCursos.size();i++) {
+				
+				if (listaCursos.get(i).getTitulo().equalsIgnoreCase(tituloC)) {
+					
+					int opcionMenu = 0;
+					
+					while (opcionMenu != 4) {
+						
+						menuEditarCurso();
+						
+						System.out.println("Elija una opcion: ");
+						opcionMenu = Integer.parseInt(sc.nextLine());
+						
+						switch (opcionMenu) {
+						
+							case 1:
+								
+								// Editar titulo
+								
+								String newTitulo = "";
+								
+								System.out.println("Escriba el nuevo titulo del curso [Anterior: " + tituloC + "]: " );
+								newTitulo = sc.nextLine();
+								
+								listaCursos.get(i).setTitulo(newTitulo);
+								
+								for (int j = 0;j < listaAlumnos.size();j++) {
+									
+									for (int k = 0;k < listaAlumnos.get(j).getCursos().length;k++) {
+										
+										if (listaAlumnos.get(j).getCursos()[k].equalsIgnoreCase(tituloC)) {
+											
+											listaAlumnos.get(j).getCursos()[k] = newTitulo;
+											
+										}
+										
+									}
+									
+								}
+								
+								break;
+								
+							case 2:
+								
+								// Editar descripcion
+								
+								String newDescrip = "";
+								
+								System.out.println("Escriba la nueva descripcion del curso: " );
+								newDescrip = sc.nextLine();
+								
+								listaCursos.get(i).setDescripcion(newDescrip);
+								
+								break;
+								
+							case 3:
+								
+								// Editar profesor
+								
+								String newProfe = "";
+								
+								System.out.println("Escriba la nueva descripcion del curso: " );
+								newProfe = sc.nextLine();
+								
+								listaCursos.get(i).setProfesor(newProfe);
+								
+								break;
+								
+							default:
+								
+								if (opcionMenu != 4) {
+									
+									System.out.println("La opcion seleccionada no es valida, vuelva a probar.");
+									
+								} else {
+									
+									System.out.println("Menu de edicion de cursos cerrado.");
+									
+								}
+						
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		}
 		
 	}
 
-	private static void eliminarAlumno(ArrayList<Alumno> listaAlumnos, Scanner sc) {
+	private static void eliminarAlumno(ArrayList<Alumno> listaAlumnos, ArrayList<Curso> listaCursos, Scanner sc) {
 		// TODO Auto-generated method stub
+		
+		String suprAlumno = "";
+		
+		System.out.println("Escribe el nombre del alumno que quieres borrar: ");
+		suprAlumno = sc.nextLine();
+		
+		if (!comprobarAlumno(listaAlumnos,suprAlumno)) {
+			
+			System.out.println("El alumno que quiere borrar no existe.");
+			
+		} else {
+			
+			for (int i = 0;i < listaAlumnos.size();i++) {
+				
+				if (listaAlumnos.get(i).getNombre().equalsIgnoreCase(suprAlumno)) {
+					
+					listaAlumnos.remove(i);
+					
+					for (int j = 0;j < listaCursos.size();j++) {
+						
+						for (int k = 0;k < listaCursos.get(j).getAlumnos().size();k++) {
+							
+							if (listaCursos.get(j).getAlumnos().get(k).getNombre().equalsIgnoreCase(suprAlumno)) {
+								
+								listaCursos.get(j).getAlumnos().remove(k);
+								
+							}
+							
+						}
+						
+					}
+					
+					System.out.println("Alumno eliminado.");
+					
+					break;
+					
+				}
+				
+			}
+			
+		}
 		
 	}
 
-	private static void eliminarCurso(ArrayList<Curso> listaCursos, Scanner sc) {
+	private static void eliminarCurso(ArrayList<Curso> listaCursos, ArrayList<Alumno> listaAlumnos, Scanner sc) {
 		// TODO Auto-generated method stub
+		
+		String suprCurso = "";
+		
+		System.out.println("Escribe el nombre del curso que quieres borrar: ");
+		suprCurso = sc.nextLine();
+		
+		if (!comprobarCurso(listaCursos,suprCurso)) {
+			
+			System.out.println("El curso que quiere eliminar no existe.");
+			
+		} else {
+			
+			for (int i = 0;i < listaCursos.size();i++) {
+				
+				if (listaCursos.get(i).getTitulo().equalsIgnoreCase(suprCurso)) {
+					
+					listaCursos.remove(i);
+					
+					for (int j = 0;j < listaAlumnos.size();j++) {
+						
+						for (int k = 0;k < listaAlumnos.get(j).getCursos().length;k++) {
+							
+							if (listaAlumnos.get(j).getCursos()[k].equalsIgnoreCase(suprCurso)) {
+								
+								listaAlumnos.get(j).eliminarCurso(suprCurso);
+								
+							}
+							
+						}
+						
+					}
+					
+					System.out.println("Curso eliminado.");
+					
+					break;
+					
+				}
+				
+			}
+			
+		}
 		
 	}
 	
-	private static void agregarCursoAAlumno(ArrayList<Alumno> listaAlumnos, Scanner sc) {
+	private static void agregarCursoAAlumno(ArrayList<Alumno> listaAlumnos, ArrayList<Curso> listaCursos, Scanner sc) {
 		// TODO Auto-generated method stub
+		
+		String nomAlumnoAgr = "";
+		
+		System.out.println("Escriba el nombre del alumno al que quiere agregar un curso: ");
+		nomAlumnoAgr = sc.nextLine();
+		
+		if (!comprobarAlumno(listaAlumnos,nomAlumnoAgr)) {
+			
+			System.out.println("El alumno al que quiere agregar un curso no existe.");
+			
+		} else {
+			
+			String tituloCursoAgr = "";
+			
+			System.out.println("Escriba el titulo del curso que quiere agregar a " + nomAlumnoAgr + ": ");
+			tituloCursoAgr = sc.nextLine();
+			
+			if (!comprobarCurso(listaCursos,tituloCursoAgr)) {
+				
+				System.out.println("El curso que quiere agregar no existe.");
+				
+			} else {
+				
+				for (int i = 0;i < listaAlumnos.size();i++) {
+					
+					if (listaAlumnos.get(i).getNombre().equalsIgnoreCase(nomAlumnoAgr)) {
+						
+						listaAlumnos.get(i).anyadirCurso(tituloCursoAgr);
+						
+						break;
+						
+					}
+					
+				}
+				
+			}
+			
+		}
 		
 	}
 
-	private static void eliminarCursoAAlumno(ArrayList<Alumno> listaAlumnos, Scanner sc) {
+	private static void eliminarCursoAAlumno(ArrayList<Alumno> listaAlumnos, ArrayList<Curso> listaCursos, Scanner sc) {
 		// TODO Auto-generated method stub
+		
+		String nomAlumnoSupr = "";
+		
+		System.out.println("Escriba el nombre del alumno al que quiere eliminar un curso: ");
+		nomAlumnoSupr = sc.nextLine();
+		
+		if (!comprobarAlumno(listaAlumnos,nomAlumnoSupr)) {
+			
+			System.out.println("El alumno al que quiere eliminar un curso no existe.");
+			
+		} else {
+			
+			String tituloCursoSupr = "";
+			
+			System.out.println("Escriba el titulo del curso que quiere eliminar a " + nomAlumnoSupr + ": ");
+			tituloCursoSupr = sc.nextLine();
+			
+			if (!comprobarCurso(listaCursos,tituloCursoSupr)) {
+				
+				System.out.println("El curso que quiere eliminar no existe.");
+				
+			} else {
+				
+				for (int i = 0;i < listaAlumnos.size();i++) {
+					
+					if (listaAlumnos.get(i).getNombre().equalsIgnoreCase(nomAlumnoSupr)) {
+						
+						listaAlumnos.get(i).eliminarCurso(tituloCursoSupr);
+						
+						break;
+						
+					}
+					
+				}
+				
+			}
+			
+		}
 		
 	}
 
@@ -452,6 +711,26 @@ public class Gestion {
 	private static void mostrarCursosAlumnos(ArrayList<Curso> listaCursos, ArrayList<Alumno> listaAlumnos) {
 		// TODO Auto-generated method stub
 		
+		System.out.println("\n--- | LISTADO ALUMNOS | ---\n");
+		
+		for (int i = 0;i < listaAlumnos.size();i++) {
+			
+			System.out.println(listaAlumnos.get(i).toString());
+			
+		}
+		
+		System.out.println("\n--- | LISTADO ALUMNOS | ---\n");
+		
+		System.out.println("\n--- | LISTADO CURSOS | ---\n");
+
+		for (int i = 0;i < listaCursos.size();i++) {
+			
+			System.out.println(listaCursos.get(i).toString());
+			
+		}
+		
+		System.out.println("\n--- | LISTADO CURSOS | ---\n");
+		
 	}
 
 	private static void mostrarMenu() {
@@ -490,6 +769,17 @@ public class Gestion {
 		System.out.println("2. Editar edad");
 		System.out.println("3. SALIR");
 		System.out.println("\n--- | EDITAR ALUMNO | ---\n");
+		
+	}
+	
+	private static void menuEditarCurso () {
+		
+		System.out.println("\n--- | EDITAR CURSO | ---\n");
+		System.out.println("1. Editar titulo");
+		System.out.println("2. Editar descripcion");
+		System.out.println("3. Editar profesor");
+		System.out.println("4. SALIR");
+		System.out.println("\n--- | EDITAR CURSO | ---\n");
 		
 	}
 	
